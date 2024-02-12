@@ -12,7 +12,7 @@ import wind_icon from '../Assets/wind.png';
 import humidity_icon from '../Assets/humidity.png';
 import { getWeatherData } from '../../api/getWeather';
 
-const WeatherApp = () => {
+const WeatherApp = (props) => {
 
 
     const[wicon,setWicon] = useState(cloud_icon);
@@ -79,6 +79,7 @@ const WeatherApp = () => {
                 </div>
             </div>
         </div>
+            <button onClick={() => props.switchPage()}>Forecast </button>
     </div>
   )
 }
