@@ -1,14 +1,11 @@
+const api_key = "2af91673f4a65428c7f744d535683c95";
 
-export const getWeatherData= async() => {
-
-    let api_key = "2af91673f4a65428c7f744d535683c95";
-
-    
+export const getWeatherData= async() => {    
     const element = document.getElementsByClassName("cityInput");
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${element[0].value}&units=Metric&appid=${api_key}`;
     if(element[0].value === ""){
         return 0;
-    }
-    let url = `https://api.openweathermap.org/data/2.5/weather?q=${element[0].value}&units=Metric&appid=${api_key}`;
+    }   
 
     let response = await fetch(url);
     let data = await response.json();
@@ -22,6 +19,7 @@ export const getWeatherData= async() => {
     wind[0].innerHTML = data.wind.speed + "Km/hr";
     temperature[0].innerHTML = Math.floor(data.main.temp) + "°C";
     location[0].innerHTML = data.name;
-    console.log("DATA: ",data)
-   return data;
+ 
+    console.log("DATA: ", data);
+    return data;
 }
