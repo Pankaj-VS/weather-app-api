@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './WeatherApp.css'
-
 import search_icon from '../Assets/search.png';
 import clear_icon from '../Assets/clear.png';
 import cloud_icon from '../Assets/cloud.png';
@@ -12,17 +11,27 @@ import wind_icon from '../Assets/wind.png';
 import humidity_icon from '../Assets/humidity.png';
 import { getWeatherData } from '../../api/getWeather';
 
-const WeatherApp = () => {
+const WeatherApp = (props) => {
 
 
     const[wicon,setWicon] = useState(cloud_icon);
-    const [data,setData] = useState([]) 
+    const [data,setData] = useState([]);
+    
+    useEffect(() => {
+        const getData = async () => {
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=London&units=Metric&appid=2af91673f4a65428c7f744d535683c95`;
+            let response = await fetch(url);
+            setData(await response.json());
+        }
+
+         getData();
+    }, []);
 
     const search =  () => {
         getWeatherData().then((data) => setData(data));
         console.log(data)
-        if(data.weather[0].icon.search("01") != -1){
-            if(data.weather[0].icon.search("d") != -1){
+        if(data.weather[0].icon.search("01") !== -1){
+            if(data.weather[0].icon.search("d") !== -1){
                 setWicon(clear_icon);
             }
             else setWicon(night_icon);
@@ -54,7 +63,7 @@ const WeatherApp = () => {
     <div className = 'container'>
         <div className = 'top-bar'>
             <input type = 'text' className = 'cityInput' placeholder = 'Enter the name of the city'/>
-            <div className = 'search-icon' onClick = {()=>{search()}}>
+            <div className = 'search-icon' onClick = {()=>search()}>
                 <img src={search_icon} alt="" />
             </div>
         </div>
@@ -79,6 +88,7 @@ const WeatherApp = () => {
                 </div>
             </div>
         </div>
+            <button onClick={() => props.switchPage()}>Forecast </button>
     </div>
   )
 }
